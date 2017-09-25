@@ -3,7 +3,6 @@ package app.com.prachigupta.flickster.adapter;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         super(context, R.layout.item_movie,movies );
     }
 
-    @NonNull
     @Override
     public View getView(int position,  View convertView,  ViewGroup parent) {
         //get Data Item
@@ -60,10 +58,10 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         if (orientation == Configuration.ORIENTATION_PORTRAIT){
             image = movie.getPosterPath();
         }else if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-            image = movie.getBackropPath();
+            image = movie.getBackdropPath();
         }
 
-        Picasso.with(getContext()).load(image).into(viewHolder.ivImage);
+        Picasso.with(getContext()).load(image).placeholder(R.drawable.placeholder).into(viewHolder.ivImage);
 
         return convertView;
     }

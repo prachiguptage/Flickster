@@ -2,6 +2,8 @@ package app.com.prachigupta.flickster;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import app.com.prachigupta.flickster.adapter.MovieArrayAdapter;
+import app.com.prachigupta.flickster.adapter.MovieRecyclerViewAdapter;
 import app.com.prachigupta.flickster.models.Movie;
 import cz.msebera.android.httpclient.Header;
 
@@ -23,15 +26,22 @@ public class MovieActivity extends AppCompatActivity {
     ArrayList<Movie> movies;
     MovieArrayAdapter movieArrayAdapter;
     ListView lvItems;
+    MovieRecyclerViewAdapter movieRecyclerViewAdapter;
+    RecyclerView rvItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        lvItems =(ListView)findViewById(R.id.lvMovies);
+        rvItems = (RecyclerView)findViewById(R.id.rvMovies);
+        //lvItems =(ListView)findViewById(R.id.lvMovies);
         movies = new ArrayList<>();
-        movieArrayAdapter = new MovieArrayAdapter(this,movies);
-        lvItems.setAdapter(movieArrayAdapter);
+//        movieArrayAdapter = new MovieArrayAdapter(this,movies);
+//        lvItems.setAdapter(movieArrayAdapter);
+
+        movieRecyclerViewAdapter = new MovieRecyclerViewAdapter(this,movies);
+        rvItems.setAdapter(movieRecyclerViewAdapter);
+        rvItems.setLayoutManager(new LinearLayoutManager(this));
         String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -43,7 +53,8 @@ public class MovieActivity extends AppCompatActivity {
                 try {
                     movieJsonResult=response.getJSONArray("results");
                     movies.addAll(Movie.fromJsonArray(movieJsonResult));
-                    movieArrayAdapter.notifyDataSetChanged();
+                    //movieArrayAdapter.notifyDataSetChanged();
+                    movieRecyclerViewAdapter.notifyDataSetChanged();
                     Log.d("Debug",movies.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
